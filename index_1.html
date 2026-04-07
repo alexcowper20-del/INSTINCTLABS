@@ -1,0 +1,1842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instinct Labs — Web Design Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: rgba(255,255,255,0.08);
+    --border-bright: rgba(255,255,255,0.18);
+    --text: #f0ede8;
+    --muted: #888880;
+    --accent: #c8b89a;
+    --accent-dim: rgba(200,184,154,0.12);
+    --radius: 4px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 3rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .nav-logo em { font-style: italic; color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+
+  .nav-cta {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 9px 20px;
+    border: 1px solid var(--border-bright);
+    border-radius: var(--radius);
+    color: var(--text);
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    text-decoration: none;
+  }
+
+  .nav-cta:hover { background: rgba(255,255,255,0.06); border-color: var(--accent); color: var(--accent); }
+
+  /* ── PAGES ── */
+  .page { display: none; padding-top: 80px; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* ── HOME PAGE ── */
+  .hero {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 3rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(ellipse, rgba(200,184,154,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(56px, 8vw, 110px);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    max-width: 900px;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    margin-top: 2.5rem;
+    max-width: 480px;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-actions {
+    margin-top: 3rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .btn-primary {
+    padding: 14px 32px;
+    background: var(--accent);
+    color: var(--black);
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .btn-primary:hover { opacity: 0.85; }
+
+  .btn-ghost {
+    padding: 14px 32px;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .btn-ghost:hover { color: var(--text); border-color: var(--border-bright); }
+
+  .hero-stat-row {
+    margin-top: 6rem;
+    display: flex;
+    gap: 4rem;
+    border-top: 1px solid var(--border);
+    padding-top: 2.5rem;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+
+  .stat-item {}
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Services strip */
+  .services-strip {
+    padding: 5rem 3rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 3rem;
+    font-weight: 500;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .service-card {
+    background: var(--black);
+    padding: 2.5rem 2rem;
+    transition: background 0.2s;
+  }
+
+  .service-card:hover { background: var(--surface); }
+
+  .service-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--border-bright);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+
+  .service-title {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+
+  .service-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* Process */
+  .process-section {
+    padding: 5rem 3rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .process-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 300;
+    margin-bottom: 3rem;
+    max-width: 600px;
+    line-height: 1.1;
+  }
+
+  .process-section h2 em { font-style: italic; color: var(--accent); }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+  }
+
+  .process-step {
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .step-num {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  .step-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .step-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* Testimonial / Review */
+  .testimonial-section {
+    padding: 5rem 3rem;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .testimonial-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .reviews-summary {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .reviews-score {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 64px;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .reviews-summary-stars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+
+  .reviews-summary-stars .star { font-size: 20px; }
+
+  .reviews-summary-label {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .reviews-summary-label strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .review-card {
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 2rem 2rem 1.75rem;
+    background: rgba(200,184,154,0.05);
+    position: relative;
+  }
+
+  .review-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    box-shadow: 0 0 40px rgba(200,184,154,0.08);
+    pointer-events: none;
+  }
+
+  .review-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.25rem;
+  }
+
+  .review-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--black);
+    flex-shrink: 0;
+    font-family: 'Syne', sans-serif;
+  }
+
+  .review-meta {}
+
+  .review-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .review-business {
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+
+  .review-stars {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 1rem;
+  }
+
+  .star {
+    color: var(--accent);
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .review-text {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+
+  .review-footer {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .review-source {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .review-date {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ── PROJECTS PAGE ── */
+  .projects-hero {
+    padding: 4rem 3rem 2rem;
+  }
+
+  .projects-hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .projects-hero h1 em { font-style: italic; color: var(--accent); }
+
+  .projects-hero p {
+    color: var(--muted);
+    max-width: 500px;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .projects-grid {
+    padding: 2rem 3rem 5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: border-color 0.25s, transform 0.25s;
+    cursor: pointer;
+  }
+
+  .project-card:hover {
+    border-color: var(--border-bright);
+    transform: translateY(-4px);
+  }
+
+  /* Illustrated project screenshot */
+  .project-thumb {
+    width: 100%;
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Plumber site mockup */
+  .thumb-plumber {
+    background: #0f1923;
+    display: flex;
+    flex-direction: column;
+  }
+  .thumb-plumber .mock-nav {
+    background: #0a1018;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .thumb-plumber .mock-logo { width: 60px; height: 8px; background: #2196F3; border-radius: 2px; }
+  .thumb-plumber .mock-links { display: flex; gap: 8px; }
+  .thumb-plumber .mock-link { width: 28px; height: 5px; background: rgba(255,255,255,0.2); border-radius: 2px; }
+  .thumb-plumber .mock-hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 16px;
+    background: linear-gradient(135deg, #0f1923 0%, #1a2d3d 100%);
+  }
+  .thumb-plumber .mock-tag { width: 80px; height: 6px; background: #2196F3; border-radius: 2px; margin-bottom: 10px; opacity: 0.8; }
+  .thumb-plumber .mock-h1 { width: 180px; height: 14px; background: rgba(255,255,255,0.9); border-radius: 3px; margin-bottom: 6px; }
+  .thumb-plumber .mock-h1b { width: 140px; height: 14px; background: rgba(255,255,255,0.9); border-radius: 3px; margin-bottom: 12px; }
+  .thumb-plumber .mock-body { width: 200px; height: 5px; background: rgba(255,255,255,0.25); border-radius: 2px; margin-bottom: 4px; }
+  .thumb-plumber .mock-body2 { width: 160px; height: 5px; background: rgba(255,255,255,0.25); border-radius: 2px; margin-bottom: 16px; }
+  .thumb-plumber .mock-btn { width: 90px; height: 26px; background: #2196F3; border-radius: 4px; }
+  .thumb-plumber .mock-badge {
+    position: absolute; top: 12px; right: 12px;
+    background: #2196F3; color: #fff; font-size: 9px;
+    padding: 3px 8px; border-radius: 20px; font-family: 'Syne', sans-serif;
+    font-weight: 700; letter-spacing: 0.05em;
+  }
+
+  /* Salon site mockup */
+  .thumb-salon {
+    background: #faf7f2;
+    display: flex;
+    flex-direction: column;
+  }
+  .thumb-salon .mock-nav {
+    background: #fff;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .thumb-salon .mock-logo { width: 70px; height: 7px; background: #b5896e; border-radius: 2px; }
+  .thumb-salon .mock-links { display: flex; gap: 8px; }
+  .thumb-salon .mock-link { width: 24px; height: 5px; background: rgba(0,0,0,0.15); border-radius: 2px; }
+  .thumb-salon .mock-split {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .thumb-salon .mock-left {
+    background: #faf7f2;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .thumb-salon .mock-tag { width: 60px; height: 5px; background: #b5896e; border-radius: 2px; margin-bottom: 10px; opacity: 0.7; }
+  .thumb-salon .mock-h1 { width: 110px; height: 11px; background: #2d1f14; border-radius: 3px; margin-bottom: 5px; }
+  .thumb-salon .mock-h1b { width: 85px; height: 11px; background: #2d1f14; border-radius: 3px; margin-bottom: 10px; }
+  .thumb-salon .mock-body { width: 130px; height: 4px; background: rgba(0,0,0,0.15); border-radius: 2px; margin-bottom: 3px; }
+  .thumb-salon .mock-body2 { width: 100px; height: 4px; background: rgba(0,0,0,0.15); border-radius: 2px; margin-bottom: 12px; }
+  .thumb-salon .mock-btn { width: 80px; height: 22px; background: #b5896e; border-radius: 3px; }
+  .thumb-salon .mock-right {
+    background: linear-gradient(160deg, #d4a882 0%, #b5896e 50%, #8c5e3c 100%);
+    position: relative;
+  }
+  .thumb-salon .mock-right::after {
+    content: '✂';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    opacity: 0.25;
+    color: #fff;
+  }
+
+  /* Electrician site mockup */
+  .thumb-electric {
+    background: #111;
+    display: flex;
+    flex-direction: column;
+  }
+  .thumb-electric .mock-nav {
+    background: #1a1a1a;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .thumb-electric .mock-logo { width: 65px; height: 8px; background: #f5c518; border-radius: 2px; }
+  .thumb-electric .mock-links { display: flex; gap: 8px; }
+  .thumb-electric .mock-link { width: 28px; height: 5px; background: rgba(255,255,255,0.15); border-radius: 2px; }
+  .thumb-electric .mock-hero {
+    flex: 1; display: flex; padding: 16px; align-items: center; gap: 16px;
+  }
+  .thumb-electric .mock-icon {
+    width: 54px; height: 54px; border-radius: 50%; background: rgba(245,197,24,0.15);
+    border: 1px solid rgba(245,197,24,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .thumb-electric .mock-text { flex: 1; }
+  .thumb-electric .mock-h1 { width: 160px; height: 12px; background: rgba(255,255,255,0.9); border-radius: 3px; margin-bottom: 6px; }
+  .thumb-electric .mock-h1b { width: 120px; height: 12px; background: rgba(255,255,255,0.9); border-radius: 3px; margin-bottom: 10px; }
+  .thumb-electric .mock-body { width: 180px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-bottom: 3px; }
+  .thumb-electric .mock-body2 { width: 140px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-bottom: 12px; }
+  .thumb-electric .mock-btn { width: 90px; height: 24px; background: #f5c518; border-radius: 3px; }
+  .thumb-electric .mock-badge {
+    position: absolute; top: 12px; right: 12px;
+    background: #f5c518; color: #111; font-size: 9px;
+    padding: 3px 8px; border-radius: 20px; font-family: 'Syne', sans-serif;
+    font-weight: 700; letter-spacing: 0.05em;
+  }
+
+  /* Restaurant mockup */
+  .thumb-restaurant {
+    background: #1a1008;
+    display: flex;
+    flex-direction: column;
+  }
+  .thumb-restaurant .mock-nav {
+    background: #120c05;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    gap: 16px;
+  }
+  .thumb-restaurant .mock-logo-center { width: 80px; height: 10px; background: #d4a853; border-radius: 2px; }
+  .thumb-restaurant .mock-link { width: 22px; height: 5px; background: rgba(255,255,255,0.15); border-radius: 2px; }
+  .thumb-restaurant .mock-hero {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 16px; text-align: center;
+    background: linear-gradient(180deg, #1a1008 0%, #2d1e0a 100%);
+  }
+  .thumb-restaurant .mock-tag { width: 90px; height: 5px; background: #d4a853; border-radius: 2px; margin-bottom: 10px; opacity: 0.8; }
+  .thumb-restaurant .mock-h1 { width: 160px; height: 14px; background: rgba(255,255,255,0.9); border-radius: 3px; margin-bottom: 5px; }
+  .thumb-restaurant .mock-h1b { width: 120px; height: 14px; background: rgba(255,255,255,0.9); border-radius: 3px; margin-bottom: 14px; }
+  .thumb-restaurant .mock-divider { width: 40px; height: 1px; background: #d4a853; margin: 0 auto 12px; }
+  .thumb-restaurant .mock-body { width: 200px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-bottom: 3px; }
+  .thumb-restaurant .mock-body2 { width: 160px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-bottom: 14px; }
+  .thumb-restaurant .mock-btn { width: 100px; height: 26px; border: 1px solid #d4a853; border-radius: 3px; margin: 0 auto; }
+
+  /* Gym mockup */
+  .thumb-gym {
+    background: #0d0d0d;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .thumb-gym::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 40px,
+      rgba(255,255,255,0.02) 40px,
+      rgba(255,255,255,0.02) 41px
+    );
+  }
+  .thumb-gym .mock-nav {
+    background: rgba(0,0,0,0.7);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+  }
+  .thumb-gym .mock-logo { width: 55px; height: 8px; background: #e53935; border-radius: 2px; }
+  .thumb-gym .mock-links { display: flex; gap: 8px; }
+  .thumb-gym .mock-link { width: 25px; height: 5px; background: rgba(255,255,255,0.15); border-radius: 2px; }
+  .thumb-gym .mock-hero {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: center; padding: 16px; position: relative;
+  }
+  .thumb-gym .mock-tag { width: 95px; height: 5px; background: #e53935; border-radius: 2px; margin-bottom: 10px; opacity: 0.9; }
+  .thumb-gym .mock-h1 { width: 190px; height: 16px; background: rgba(255,255,255,0.95); border-radius: 3px; margin-bottom: 5px; }
+  .thumb-gym .mock-h1b { width: 140px; height: 16px; background: rgba(255,255,255,0.95); border-radius: 3px; margin-bottom: 12px; }
+  .thumb-gym .mock-body { width: 210px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-bottom: 3px; }
+  .thumb-gym .mock-body2 { width: 170px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-bottom: 14px; }
+  .thumb-gym .mock-btns { display: flex; gap: 8px; }
+  .thumb-gym .mock-btn { width: 90px; height: 26px; background: #e53935; border-radius: 3px; }
+  .thumb-gym .mock-btn2 { width: 70px; height: 26px; border: 1px solid rgba(255,255,255,0.2); border-radius: 3px; }
+
+  /* Accountant mockup */
+  .thumb-accountant {
+    background: #f8f9fb;
+    display: flex;
+    flex-direction: column;
+  }
+  .thumb-accountant .mock-nav {
+    background: #fff;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .thumb-accountant .mock-logo { width: 70px; height: 7px; background: #1a3a6b; border-radius: 2px; }
+  .thumb-accountant .mock-links { display: flex; gap: 8px; }
+  .thumb-accountant .mock-link { width: 26px; height: 5px; background: rgba(0,0,0,0.12); border-radius: 2px; }
+  .thumb-accountant .mock-split {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+  }
+  .thumb-accountant .mock-left {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #f8f9fb;
+  }
+  .thumb-accountant .mock-tag { width: 70px; height: 5px; background: #1a3a6b; border-radius: 2px; margin-bottom: 10px; opacity: 0.5; }
+  .thumb-accountant .mock-h1 { width: 130px; height: 11px; background: #1a3a6b; border-radius: 3px; margin-bottom: 5px; }
+  .thumb-accountant .mock-h1b { width: 100px; height: 11px; background: #1a3a6b; border-radius: 3px; margin-bottom: 10px; }
+  .thumb-accountant .mock-body { width: 150px; height: 4px; background: rgba(0,0,0,0.12); border-radius: 2px; margin-bottom: 3px; }
+  .thumb-accountant .mock-body2 { width: 120px; height: 4px; background: rgba(0,0,0,0.12); border-radius: 2px; margin-bottom: 12px; }
+  .thumb-accountant .mock-btn { width: 80px; height: 22px; background: #1a3a6b; border-radius: 3px; }
+  .thumb-accountant .mock-right {
+    background: #1a3a6b;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+  }
+  .thumb-accountant .mock-stat {
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .thumb-accountant .mock-stat-num { width: 50px; height: 10px; background: rgba(255,255,255,0.8); border-radius: 2px; }
+  .thumb-accountant .mock-stat-label { width: 70px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; }
+
+  .project-info {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .project-category {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+  }
+
+  .project-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .project-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .project-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* ── PRICING PAGE (reuse from before, dark version) ── */
+  .pricing-page {
+    padding: 4rem 3rem 5rem;
+  }
+
+  .pricing-page h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .pricing-page h1 em { font-style: italic; color: var(--accent); }
+
+  .pricing-page .sub {
+    color: var(--muted);
+    max-width: 460px;
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 3.5rem;
+  }
+
+  .pricing-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+
+  .p-card {
+    background: var(--black);
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.2s;
+  }
+
+  .p-card:hover { background: var(--surface); }
+  .p-card.featured { background: var(--surface2); }
+
+  .p-badge {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(200,184,154,0.3);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+    width: fit-content;
+    font-weight: 500;
+  }
+
+  .p-tier {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  .p-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .p-price sub {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 400;
+    vertical-align: baseline;
+  }
+
+  .p-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0.75rem 0 1.5rem;
+    line-height: 1.7;
+  }
+
+  .p-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 0 1.5rem;
+  }
+
+  .p-features {
+    list-style: none;
+    flex: 1;
+    margin-bottom: 2rem;
+  }
+
+  .p-features li {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .p-features li::before {
+    content: '—';
+    color: var(--accent);
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .p-btn {
+    display: block;
+    text-align: center;
+    padding: 12px 0;
+    border-radius: var(--radius);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: 1px solid var(--border-bright);
+    background: transparent;
+    color: var(--text);
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .p-btn:hover { background: rgba(255,255,255,0.06); border-color: var(--accent); }
+
+  .p-btn.accent {
+    background: var(--accent);
+    color: var(--black);
+    border-color: var(--accent);
+  }
+
+  .p-btn.accent:hover { opacity: 0.85; }
+
+  .retainer-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .retainer-bar h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 300;
+    margin-bottom: 0.25rem;
+  }
+
+  .retainer-bar p {
+    font-size: 13px;
+    color: var(--muted);
+    max-width: 400px;
+    line-height: 1.6;
+  }
+
+  .retainer-price-tag {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    white-space: nowrap;
+  }
+
+  .retainer-price-tag sub {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    vertical-align: baseline;
+  }
+
+  .faq-section {
+    margin-top: 1rem;
+  }
+
+  .faq-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    margin-bottom: 2rem;
+    color: var(--text);
+  }
+
+  .faq-item {
+    border-top: 1px solid var(--border);
+    padding: 1.25rem 0;
+  }
+
+  .faq-item:last-child { border-bottom: 1px solid var(--border); }
+
+  .faq-q {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .faq-a {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── CONTACT PAGE ── */
+  .contact-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 80px);
+  }
+
+  .contact-left {
+    padding: 5rem 3rem;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .contact-left h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 5vw, 72px);
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-left h1 em { font-style: italic; color: var(--accent); }
+
+  .contact-left p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 400px;
+    margin-bottom: 3rem;
+  }
+
+  .contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .contact-detail-item {}
+  .contact-detail-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  .contact-detail-value {
+    font-size: 16px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .contact-right {
+    padding: 5rem 3rem;
+    background: var(--surface);
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    background: var(--black);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--accent);
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: var(--muted);
+  }
+
+  .form-group select option { background: #111; }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .form-submit {
+    width: 100%;
+    padding: 15px;
+    background: var(--accent);
+    color: var(--black);
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 0.5rem;
+  }
+
+  .form-submit:hover { opacity: 0.85; }
+
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+
+  .success-msg h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+
+  .success-msg p { color: var(--muted); font-size: 14px; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+  }
+
+  footer p {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-links a {
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--text); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; }
+    .nav-links { display: none; }
+    .hero { padding: 3rem 1.25rem 2rem; }
+    .hero-stat-row { gap: 2rem; flex-wrap: wrap; }
+    .services-strip, .process-section, .testimonial-section { padding: 3rem 1.25rem; }
+    .projects-hero, .projects-grid { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .pricing-page { padding: 3rem 1.25rem; }
+    .contact-page { grid-template-columns: 1fr; }
+    .contact-left { padding: 3rem 1.25rem; border-right: none; border-bottom: 1px solid var(--border); }
+    .contact-right { padding: 2.5rem 1.25rem; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" onclick="showPage('home')"><img src="IL_LOGO.png" alt="Instinct Labs" style="height:36px;width:auto;display:block;"></a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
+    <li><a onclick="showPage('projects')" id="nav-projects">Projects</a></li>
+    <li><a onclick="showPage('pricing')" id="nav-pricing">Pricing</a></li>
+    <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
+  </ul>
+  <a class="nav-cta" onclick="showPage('contact')">Start a project</a>
+</nav>
+
+<!-- ══ HOME ══ -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <p class="hero-eyebrow">Web Design Studio — Working Globally</p>
+    <h1>Websites that<br>work <em>hard</em><br>for your business</h1>
+    <p class="hero-sub">We build fast, beautiful, conversion-focused websites for local businesses across the UK. No templates. No fluff. Just results.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="showPage('projects')">View our work</button>
+      <button class="btn-ghost" onclick="showPage('contact')">Get a quote</button>
+    </div>
+    <div class="hero-stat-row">
+      <div class="stat-item">
+        <div class="stat-num">30+</div>
+        <div class="stat-label">Sites delivered</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">7</div>
+        <div class="stat-label">Day avg. turnaround</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Client ownership</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">£599</div>
+        <div class="stat-label">Starting from</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services-strip">
+    <p class="section-label">What we do</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <div class="service-title">Website Design</div>
+        <div class="service-desc">Custom designs built for your business. No templates — every site is made from scratch to reflect your brand.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <div class="service-title">SEO Setup</div>
+        <div class="service-desc">Every site comes with on-page SEO, Google Analytics, and a fast Cloudflare-backed stack so you rank from day one.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <div class="service-title">Monthly Care</div>
+        <div class="service-desc">Hosting, security, updates, and content changes handled for you — from £75/month. Never worry about your site again.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">04</div>
+        <div class="service-title">E-Commerce</div>
+        <div class="service-desc">From simple product pages to full online shops with payments, bookings, and CRM integrations built in.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="process-section">
+    <h2>Simple process,<br><em>serious</em> results</h2>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-num">Step 01</div>
+        <div class="step-title">Discovery call</div>
+        <div class="step-desc">A quick 20-minute chat to understand your business, goals, and what you need from a website.</div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">Step 02</div>
+        <div class="step-title">Design & build</div>
+        <div class="step-desc">We design and build your site, keeping you updated throughout. Most projects take 7–14 days.</div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">Step 03</div>
+        <div class="step-title">Review & refine</div>
+        <div class="step-desc">You get two rounds of revisions to make sure everything is exactly how you want it.</div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">Step 04</div>
+        <div class="step-title">Launch</div>
+        <div class="step-desc">We handle the launch, domain setup, and Cloudflare configuration. You just go live.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonial-section">
+    <div class="testimonial-inner">
+
+      <div class="reviews-summary">
+        <div class="reviews-score">5.0</div>
+        <div>
+          <div class="reviews-summary-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <div class="reviews-summary-label"><strong>30+ five-star reviews</strong> across Google &amp; Facebook</div>
+        </div>
+      </div>
+
+      <div class="reviews-grid">
+
+        <div class="review-card">
+          <div class="review-top">
+            <div class="review-avatar">DH</div>
+            <div class="review-meta">
+              <div class="review-name">Dave Hargreaves</div>
+              <div class="review-business">DH Plumbing &amp; Heating, Leeds</div>
+            </div>
+          </div>
+          <div class="review-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="review-text">Alex built our site in under two weeks. Within a month we were getting calls from Google that we never had before. Best money we've spent on the business.</p>
+          <div class="review-footer">
+            <span class="review-source">Google Review</span>
+            <span class="review-date">March 2025</span>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-top">
+            <div class="review-avatar">MC</div>
+            <div class="review-meta">
+              <div class="review-name">Mila Christodoulou</div>
+              <div class="review-business">Mila &amp; Co Hair Studio, Manchester</div>
+            </div>
+          </div>
+          <div class="review-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="review-text">Our old site was embarrassing. The new one looks gorgeous and our online bookings have gone through the roof. Clients constantly say they chose us because the website looked so professional.</p>
+          <div class="review-footer">
+            <span class="review-source">Google Review</span>
+            <span class="review-date">January 2025</span>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-top">
+            <div class="review-avatar">TR</div>
+            <div class="review-meta">
+              <div class="review-name">Tom Rawcliffe</div>
+              <div class="review-business">Spark Right Electrical, Sheffield</div>
+            </div>
+          </div>
+          <div class="review-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="review-text">Straightforward, fast, and great value. Alex knew exactly what a trades business needs from a website. No waffle, just got it done. Already recommended him to two other lads on site.</p>
+          <div class="review-footer">
+            <span class="review-source">Facebook Review</span>
+            <span class="review-date">February 2025</span>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-top">
+            <div class="review-avatar">PF</div>
+            <div class="review-meta">
+              <div class="review-name">Patricia Flynn</div>
+              <div class="review-business">Clearview Accounting, Leeds</div>
+            </div>
+          </div>
+          <div class="review-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="review-text">We were sceptical about the price at first but the ROI has been incredible. Three new clients in the first month who found us on Google. Alex was professional, communicative, and delivered exactly on time.</p>
+          <div class="review-footer">
+            <span class="review-source">Google Review</span>
+            <span class="review-date">April 2025</span>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-top">
+            <div class="review-avatar">JO</div>
+            <div class="review-meta">
+              <div class="review-name">James O'Brien</div>
+              <div class="review-business">Iron District Gym, Birmingham</div>
+            </div>
+          </div>
+          <div class="review-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="review-text">Wanted something that matched the energy of the gym — dark, bold, no-nonsense. Alex nailed it first time. Membership sign-ups from the site have been brilliant since launch.</p>
+          <div class="review-footer">
+            <span class="review-source">Google Review</span>
+            <span class="review-date">December 2024</span>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-top">
+            <div class="review-avatar">SK</div>
+            <div class="review-meta">
+              <div class="review-name">Sophie Kaur</div>
+              <div class="review-business">The Copper Table, York</div>
+            </div>
+          </div>
+          <div class="review-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="review-text">The site perfectly captures the atmosphere of the restaurant. Our reservation system works flawlessly and we've had so many compliments from guests about how easy it is to book. Absolutely worth every penny.</p>
+          <div class="review-footer">
+            <span class="review-source">Facebook Review</span>
+            <span class="review-date">November 2024</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══ PROJECTS ══ -->
+<div id="page-projects" class="page">
+  <div class="projects-hero">
+    <h1>Our <em>work</em></h1>
+    <p>A selection of sites built for local businesses across the UK — from sole traders to growing teams.</p>
+  </div>
+
+  <div class="projects-grid">
+
+    <!-- Plumber -->
+    <div class="project-card">
+      <div class="project-thumb thumb-plumber" style="position:relative;">
+        <div class="mock-nav">
+          <div class="mock-logo"></div>
+          <div class="mock-links"><div class="mock-link"></div><div class="mock-link"></div><div class="mock-link"></div></div>
+        </div>
+        <div class="mock-hero">
+          <div class="mock-tag"></div>
+          <div class="mock-h1"></div>
+          <div class="mock-h1b"></div>
+          <div class="mock-body"></div>
+          <div class="mock-body2"></div>
+          <div class="mock-btn"></div>
+        </div>
+        <span class="mock-badge">Live</span>
+      </div>
+      <div class="project-info">
+        <div class="project-category">Plumbing & Heating</div>
+        <div class="project-name">DH Plumbing & Heating</div>
+        <div class="project-desc">Lead-generation site for a sole trader plumber in Leeds. Ranked on page 1 of Google within 8 weeks of launch.</div>
+        <div class="project-tags">
+          <span class="tag">Starter</span><span class="tag">SEO</span><span class="tag">7 days</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Salon -->
+    <div class="project-card">
+      <div class="project-thumb thumb-salon">
+        <div class="mock-nav">
+          <div class="mock-logo"></div>
+          <div class="mock-links"><div class="mock-link"></div><div class="mock-link"></div><div class="mock-link"></div></div>
+        </div>
+        <div class="mock-split">
+          <div class="mock-left">
+            <div class="mock-tag"></div>
+            <div class="mock-h1"></div>
+            <div class="mock-h1b"></div>
+            <div class="mock-body"></div>
+            <div class="mock-body2"></div>
+            <div class="mock-btn"></div>
+          </div>
+          <div class="mock-right"></div>
+        </div>
+      </div>
+      <div class="project-info">
+        <div class="project-category">Hair & Beauty</div>
+        <div class="project-name">Mila & Co Hair Studio</div>
+        <div class="project-desc">Elegant booking-enabled website for a boutique salon in Manchester. Integrated with Fresha for online appointments.</div>
+        <div class="project-tags">
+          <span class="tag">Business</span><span class="tag">Booking</span><span class="tag">Monthly care</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Electrician -->
+    <div class="project-card">
+      <div class="project-thumb thumb-electric" style="position:relative;">
+        <div class="mock-nav">
+          <div class="mock-logo"></div>
+          <div class="mock-links"><div class="mock-link"></div><div class="mock-link"></div><div class="mock-link"></div></div>
+        </div>
+        <div class="mock-hero" style="display:flex;align-items:center;gap:16px;padding:16px;">
+          <div class="mock-icon">⚡</div>
+          <div class="mock-text">
+            <div class="mock-h1"></div>
+            <div class="mock-h1b"></div>
+            <div class="mock-body"></div>
+            <div class="mock-body2"></div>
+            <div class="mock-btn"></div>
+          </div>
+        </div>
+        <span class="mock-badge">Live</span>
+      </div>
+      <div class="project-info">
+        <div class="project-category">Electrical Contractor</div>
+        <div class="project-name">Spark Right Electrical</div>
+        <div class="project-desc">Clean, trust-building site for a NICEIC-registered electrician in Sheffield. Includes a quote request form and reviews feed.</div>
+        <div class="project-tags">
+          <span class="tag">Starter</span><span class="tag">Quote form</span><span class="tag">Google reviews</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Restaurant -->
+    <div class="project-card">
+      <div class="project-thumb thumb-restaurant">
+        <div class="mock-nav">
+          <div class="mock-link"></div>
+          <div class="mock-logo-center"></div>
+          <div class="mock-link"></div>
+        </div>
+        <div class="mock-hero">
+          <div class="mock-tag"></div>
+          <div class="mock-h1"></div>
+          <div class="mock-h1b"></div>
+          <div class="mock-divider"></div>
+          <div class="mock-body"></div>
+          <div class="mock-body2"></div>
+          <div class="mock-btn"></div>
+        </div>
+      </div>
+      <div class="project-info">
+        <div class="project-category">Hospitality</div>
+        <div class="project-name">The Copper Table</div>
+        <div class="project-desc">Atmospheric restaurant site for a fine-dining spot in York. Online reservation system and seasonal menu management built in.</div>
+        <div class="project-tags">
+          <span class="tag">Premium</span><span class="tag">Reservations</span><span class="tag">CMS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gym -->
+    <div class="project-card">
+      <div class="project-thumb thumb-gym">
+        <div class="mock-nav">
+          <div class="mock-logo"></div>
+          <div class="mock-links"><div class="mock-link"></div><div class="mock-link"></div><div class="mock-link"></div></div>
+        </div>
+        <div class="mock-hero">
+          <div class="mock-tag"></div>
+          <div class="mock-h1"></div>
+          <div class="mock-h1b"></div>
+          <div class="mock-body"></div>
+          <div class="mock-body2"></div>
+          <div class="mock-btns"><div class="mock-btn"></div><div class="mock-btn2"></div></div>
+        </div>
+      </div>
+      <div class="project-info">
+        <div class="project-category">Health & Fitness</div>
+        <div class="project-name">Iron District Gym</div>
+        <div class="project-desc">High-energy membership site for an independent gym in Birmingham. Includes class schedules, membership tiers, and a PT booking system.</div>
+        <div class="project-tags">
+          <span class="tag">Premium</span><span class="tag">Memberships</span><span class="tag">Bookings</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accountant -->
+    <div class="project-card">
+      <div class="project-thumb thumb-accountant">
+        <div class="mock-nav">
+          <div class="mock-logo"></div>
+          <div class="mock-links"><div class="mock-link"></div><div class="mock-link"></div><div class="mock-link"></div></div>
+        </div>
+        <div class="mock-split">
+          <div class="mock-left">
+            <div class="mock-tag"></div>
+            <div class="mock-h1"></div>
+            <div class="mock-h1b"></div>
+            <div class="mock-body"></div>
+            <div class="mock-body2"></div>
+            <div class="mock-btn"></div>
+          </div>
+          <div class="mock-right">
+            <div class="mock-stat"><div class="mock-stat-num"></div><div class="mock-stat-label"></div></div>
+            <div class="mock-stat"><div class="mock-stat-num"></div><div class="mock-stat-label"></div></div>
+            <div class="mock-stat"><div class="mock-stat-num"></div><div class="mock-stat-label"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="project-info">
+        <div class="project-category">Professional Services</div>
+        <div class="project-name">Clearview Accounting</div>
+        <div class="project-desc">Professional, trust-led site for a small accountancy firm in Leeds. Designed to convert SME owners searching for a new accountant.</div>
+        <div class="project-tags">
+          <span class="tag">Business</span><span class="tag">Lead gen</span><span class="tag">Monthly care</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ PRICING ══ -->
+<div id="page-pricing" class="page">
+  <div class="pricing-page">
+    <h1>Transparent<br><em>pricing</em></h1>
+    <p class="sub">No hidden fees. No lock-in. One flat price per project, with optional ongoing support if you want it.</p>
+
+    <p class="section-label">One-off projects</p>
+    <div class="pricing-cards">
+      <div class="p-card">
+        <p class="p-tier">Starter</p>
+        <p class="p-price">£599 <sub>one-off</sub></p>
+        <p class="p-desc">Perfect for sole traders and small businesses that need a clean, professional presence online — fast.</p>
+        <hr class="p-divider">
+        <ul class="p-features">
+          <li>Up to 5 pages</li>
+          <li>Mobile-responsive design</li>
+          <li>Contact form</li>
+          <li>Google Maps embed</li>
+          <li>Basic on-page SEO</li>
+          <li>Delivered in 7 days</li>
+        </ul>
+        <button class="p-btn" onclick="showPage('contact')">Get started</button>
+      </div>
+
+      <div class="p-card featured">
+        <div class="p-badge">Most popular</div>
+        <p class="p-tier">Business</p>
+        <p class="p-price">£1,200 <sub>one-off</sub></p>
+        <p class="p-desc">A full-featured site built to convert visitors into customers, with SEO from day one.</p>
+        <hr class="p-divider">
+        <ul class="p-features">
+          <li>Up to 8 pages</li>
+          <li>Custom brand-led design</li>
+          <li>Blog or news section</li>
+          <li>SEO setup & Google Analytics</li>
+          <li>Speed & performance optimised</li>
+          <li>Cloudflare CDN setup</li>
+          <li>Delivered in 14 days</li>
+        </ul>
+        <button class="p-btn accent" onclick="showPage('contact')">Get started</button>
+      </div>
+
+      <div class="p-card">
+        <p class="p-tier">Premium</p>
+        <p class="p-price">£2,500+ <sub>one-off</sub></p>
+        <p class="p-desc">Custom builds for businesses that need e-commerce, bookings, or complex integrations.</p>
+        <hr class="p-divider">
+        <ul class="p-features">
+          <li>Unlimited pages</li>
+          <li>E-commerce or booking system</li>
+          <li>CRM & payment integrations</li>
+          <li>Advanced SEO & schema markup</li>
+          <li>Custom animations</li>
+          <li>Priority delivery & support</li>
+        </ul>
+        <button class="p-btn" onclick="showPage('contact')">Get started</button>
+      </div>
+    </div>
+
+    <p class="section-label" style="margin-top:3rem;">Ongoing support</p>
+    <div class="retainer-bar">
+      <div>
+        <h3>Monthly care plan</h3>
+        <p>Hosting, security, updates, and content changes — all handled. Most clients add this after launch. Your site stays fast, secure, and up to date.</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
+        <div class="retainer-price-tag">£75–£150 <sub>/ month</sub></div>
+        <button class="p-btn" style="padding:12px 24px;white-space:nowrap;" onclick="showPage('contact')">Enquire</button>
+      </div>
+    </div>
+
+    <div class="faq-section">
+      <h2>Common questions</h2>
+      <div class="faq-item">
+        <div class="faq-q">Do I own my website?</div>
+        <div class="faq-a">Yes — 100%. Once the project is complete, everything is yours. No lock-in, no ongoing dependency on us unless you want it.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What do you need from me to get started?</div>
+        <div class="faq-a">Just your logo, brand colours, and any text or photos you want on the site. We'll guide you through the rest and can even help with copywriting if needed.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can you refresh an existing site?</div>
+        <div class="faq-a">Absolutely. Refreshes and redesigns are quoted based on scope — get in touch and we'll give you an honest estimate.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What's the payment structure?</div>
+        <div class="faq-a">50% upfront to start the project, 50% on delivery. Simple and fair for both sides.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How long does a website take to build?</div>
+        <div class="faq-a">Starter sites are typically delivered within 7 days. Business sites take 10–14 days. Premium builds are scoped individually but we always give a clear timeline upfront.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CONTACT ══ -->
+<div id="page-contact" class="page">
+  <div class="contact-page">
+    <div class="contact-left">
+      <div>
+        <h1>Let's build<br>something <em>great</em></h1>
+        <p>Tell us about your project and we'll come back to you within one business day with a clear quote and timeline. No obligation.</p>
+        <div class="contact-details">
+          <div class="contact-detail-item">
+            <div class="contact-detail-label">Email</div>
+            <div class="contact-detail-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c1a9a4adadae81a8afb2b5a8afa2b5ada0a3b2efa2aeefb4aa">[email&#160;protected]</a></div>
+          </div>
+          <div class="contact-detail-item">
+            <div class="contact-detail-label">Phone</div>
+            <div class="contact-detail-value">+44 7700 000 000</div>
+          </div>
+          <div class="contact-detail-item">
+            <div class="contact-detail-label">We work</div>
+            <div class="contact-detail-value">Globally, remote-first</div>
+          </div>
+          <div class="contact-detail-item">
+            <div class="contact-detail-label">Response time</div>
+            <div class="contact-detail-value">Within 1 business day</div>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:3rem;">We work with businesses remotely across the UK and internationally. Wherever you are, we've got you covered.</p>
+    </div>
+
+    <div class="contact-right">
+      <div id="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First name</label>
+            <input type="text" placeholder="Sarah">
+          </div>
+          <div class="form-group">
+            <label>Last name</label>
+            <input type="text" placeholder="Johnson">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email address</label>
+          <input type="email" placeholder="sarah@yourbusiness.co.uk">
+        </div>
+        <div class="form-group">
+          <label>Business name</label>
+          <input type="text" placeholder="Johnson Plumbing Ltd">
+        </div>
+        <div class="form-group">
+          <label>What do you need?</label>
+          <select>
+            <option value="" disabled selected>Select a package</option>
+            <option>Starter — £599</option>
+            <option>Business — £1,200</option>
+            <option>Premium — £2,500+</option>
+            <option>Monthly care plan</option>
+            <option>Not sure — just want a chat</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tell us about your business</label>
+          <textarea placeholder="What does your business do? Who are your customers? Any examples of sites you like?"></textarea>
+        </div>
+        <button class="form-submit" onclick="submitForm()">Send enquiry →</button>
+      </div>
+
+      <div class="success-msg" id="success-msg">
+        <h3>Message received.</h3>
+        <p>We'll be in touch within one business day with a quote and next steps. Talk soon.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 Instinct Labs. All rights reserved.</p>
+  <div class="footer-links">
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('projects')">Projects</a>
+    <a onclick="showPage('pricing')">Pricing</a>
+    <a onclick="showPage('contact')">Contact</a>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links 
